@@ -10,7 +10,9 @@ const connection = new IORedis({
 });
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: "u134svlakin@gmail.com",
     pass: "aalogvlutqhedykw"
