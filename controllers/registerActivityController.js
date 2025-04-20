@@ -5,7 +5,7 @@ import { emailQueue } from './../queues/emailQueue.js';
 
 const router = express.Router();
 
-router.get("/registerActivityApp", async (req, res) => {
+router.post("/registerActivityApp", async (req, res) => {
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const fecha = new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" });
 
