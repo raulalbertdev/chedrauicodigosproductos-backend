@@ -6,9 +6,7 @@ import productoRoutes from "./controllers/productoController.js";
 import pdfRoutes from "./controllers/pdfController.js";
 import csvRoutes from './controllers/csvController.js';
 import registerActivityAppRoutes from './controllers/registerActivityController.js';
-import { createBullBoard } from '@bull-board/express';
-import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
-import { emailQueue } from './queues/emailQueue.js';
+import { serverAdapter } from './adapters/bullBoardAdapter.js';
 
 const app = express();
 const PORT = 3000;
@@ -22,11 +20,8 @@ app.get("/", (req, res) => {
   res.redirect('https://www.chedraui.com.mx/');
 });
 
-const { router } = createBullBoard([
-  new BullMQAdapter(emailQueue)
-]);
 
-app.use('/admin/queue', router);
+app.use('/admin/queue', serverAdapter.getRouter());
 
 
 

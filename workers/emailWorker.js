@@ -1,14 +1,12 @@
-// workers/emailWorker.js
-import nodemailer from 'nodemailer';
 import { Worker } from 'bullmq';
 import IORedis from 'ioredis';
+import nodemailer from 'nodemailer';
 
-// ✅ Configuración explícita de conexión
 const connection = new IORedis({
-  host: '127.0.0.1', // o tu host Redis
-  port: 6379,        // Puerto por defecto
-  maxRetriesPerRequest: null, // ⚠️ Esto evita el error que viste
-  enableReadyCheck: false     // (opcional, pero recomendado en BullMQ)
+  host: '127.0.0.1',
+  port: 6379,
+  maxRetriesPerRequest: null,
+  enableReadyCheck: false
 });
 
 const transporter = nodemailer.createTransport({
@@ -19,22 +17,23 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const emailWorker = new Worker("correo", async job => {
+const worker = new Worker('correo', async job => {
   const { ip, fecha, status } = job.data;
 
-  const mensaje = `
-📍 Nueva actividad detectada:
-
+  try {
+    await transporter.sendMail({
+      from: '"Monitor App Chedraui" <tu-email@gmail.com>',
+      to: 'tu-email@gmail.com',
+      subject: `🚨 Actividad detectada`,
+      text: `
 📅 Fecha y hora: ${fecha}
 🌐 IP: ${ip}
-`;
+📌 Estado: ${status}
+      `
+    });
 
-  await transporter.sendMail({
-    from: '"Monitor Chedraui" <raulalbertdev@gmail.com>',
-    to: "u134svlakin@gmail.com",
-    subject: `🚨 ${status}`,
-    text: mensaje
-  });
-
-  console.log("📧 Correo enviado desde worker:", ip);
+    console.log('📧 Correo enviado con éxito.');
+  } catch (err) {
+    console.error('❌ Error al enviar correo:', err.message);
+  }
 }, { connection });
