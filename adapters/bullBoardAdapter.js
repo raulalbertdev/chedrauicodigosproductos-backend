@@ -1,10 +1,8 @@
 // bullBoard.js o dentro de server.js
 import { createBullBoard } from '@bull-board/api';
 import { ExpressAdapter } from '@bull-board/express';
-import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter.js';
 import { Queue } from 'bullmq';
-
-import express from 'express';
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/queue');
