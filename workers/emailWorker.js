@@ -32,8 +32,7 @@ const worker = new Worker('correo', async job => {
       `
     });
 
-    console.log(`Correo enviado correctamente para job ${job.id}`);
-
+    console.log('📧 Correo enviado con éxito.');
   } catch (err) {
     console.error('❌ Error al enviar correo:', err.message);
   }
