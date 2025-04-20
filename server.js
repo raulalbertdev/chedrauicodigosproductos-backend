@@ -3,9 +3,12 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import productoRoutes from "./controllers/productoController.js";
-import { enviarNotificacion } from "./services/emailService.js";
 import pdfRoutes from "./controllers/pdfController.js";
 import csvRoutes from './controllers/csvController.js';
+import registerActivityAppRoutes from './controllers/registerActivityController.js';
+import { createBullBoard } from '@bull-board/express';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { emailQueue } from './queues/emailQueue.js';
 
 const app = express();
 const PORT = 3000;
@@ -19,18 +22,15 @@ app.get("/", (req, res) => {
   res.redirect('https://www.chedraui.com.mx/');
 });
 
-app.post("/identifyApp", async (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  const status = req.body.status || "Actividad desconocida";
+const { router } = createBullBoard([
+  new BullMQAdapter(emailQueue)
+]);
 
-  const resultado = await enviarNotificacion({ ip, status });
+app.use('/admin/queue', router);
 
-  if (resultado.success) {
-    console.log("Datos recibidos y correo enviado.")
-  } else {
-    console.log("No se pudo enviar el correo")
-  }
-});
+
+
+app.use(registerActivityAppRoutes);
 
 app.use(productoRoutes);
 app.use(pdfRoutes);
