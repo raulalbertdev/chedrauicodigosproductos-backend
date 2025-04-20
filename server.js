@@ -11,9 +11,12 @@ import registerActivityAppRoutes from './controllers/registerActivityController.
 const app = express();
 const PORT = 3000;
 
+app.set('trust proxy', true);
+
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+
 
 app.get("/", (req, res) => {
   /* res.send("¡Servidor funcionando! 🚀 Prueba /producto/:id o POST a /generar-pdf"); */

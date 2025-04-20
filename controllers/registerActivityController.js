@@ -4,7 +4,7 @@ import express from 'express';
 const router = express.Router();
 
 router.post("/registerActivityApp", async (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const ip = req.headers["x-forwarded-for"]?.split(',')[0].trim() || req.socket.remoteAddress;
   const fecha = new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" });
 
   const data = {
