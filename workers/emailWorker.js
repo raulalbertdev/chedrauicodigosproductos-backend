@@ -20,9 +20,10 @@ const transporter = nodemailer.createTransport({
 const worker = new Worker('correo', async job => {
   const { ip, fecha, status } = job.data;
 
+  console.log("👷‍♂️ Worker ejecutandose...");
   try {
     await transporter.sendMail({
-      from: '"Monitor App Chedraui" <raulalbertdev@gmail.com>',
+      from: '"Monitor App Chedraui" <u134svlakin@gmail.com>',
       to: 'u134svlakin@gmail.com',
       subject: `🚨 Actividad detectada en la APP`,
       text: `
@@ -32,8 +33,14 @@ const worker = new Worker('correo', async job => {
       `
     });
 
-    console.log('📧 Correo enviado con éxito.');
+    console.log(`📧 Correo enviado correctamente (Job ID: ${job.id})`);
+    return true; // <-- asegúrate de que se resuelva
   } catch (err) {
-    console.error('❌ Error al enviar correo:', err.message);
+    console.error(`❌ Error al enviar correo (Job ID: ${job.id}):`, err);
+    throw err; // <-- así BullMQ lo sabrá como "fallido"
   }
-}, { connection });
+}, {
+  connection,
+  removeOnComplete: true,
+  removeOnFail: false
+});
