@@ -13,7 +13,9 @@ router.get("/producto/:id", async (req, res) => {
     if (!response.ok) {
       throw new Error(`Error en la API de Chedraui: ${response.status}`);
     }
+
     const data = await response.json();
+
     return res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
