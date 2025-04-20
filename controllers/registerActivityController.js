@@ -4,6 +4,9 @@ import express from 'express';
 const router = express.Router();
 
 router.post("/registerActivityApp", async (req, res) => {
+  console.log('x-forwarded-for:', req.headers['x-forwarded-for']);
+  console.log('remoteAddress:', req.socket.remoteAddress);
+
   const ip = req.headers["x-forwarded-for"]?.split(',')[0].trim() || req.socket.remoteAddress;
   const fecha = new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" });
 
@@ -13,10 +16,7 @@ router.post("/registerActivityApp", async (req, res) => {
     status: req.body.status || "Actividad desconocida"
   };
 
-
-  // Logica para registrar en base de datos
-
-  res.json({ mensaje: "Correo encolado para envío asincrónico.", data : data });
+  res.json({ mensaje: "Informe de registro de actividad", data });
 });
 
 export default router;
