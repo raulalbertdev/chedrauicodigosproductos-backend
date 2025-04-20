@@ -6,7 +6,7 @@ import productoRoutes from "./controllers/productoController.js";
 import pdfRoutes from "./controllers/pdfController.js";
 import csvRoutes from './controllers/csvController.js';
 import registerActivityAppRoutes from './controllers/registerActivityController.js';
-import { serverAdapter } from './adapters/bullBoardAdapter.js';
+//import { serverAdapter } from './adapters/bullBoardAdapter.js';
 
 const app = express();
 const PORT = 3000;
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.use('/admin/queue', serverAdapter.getRouter());
+//app.use('/admin/queue', serverAdapter.getRouter());
 
 
 

@@ -1,7 +1,5 @@
 // controllers/producto.controller.js
 import express from 'express';
-import fetch from 'node-fetch';
-import { emailQueue } from './../queues/emailQueue.js';
 
 const router = express.Router();
 
@@ -15,11 +13,8 @@ router.post("/registerActivityApp", async (req, res) => {
     status: req.body.status || "Actividad desconocida"
   };
 
-  // Encolar tarea sin bloquear
-  await emailQueue.add("notificacion", data, {
-    attempts: 3,
-    backoff: { type: 'exponential', delay: 5000 }
-  });
+
+  // Logica para registrar en base de datos
 
   res.json({ mensaje: "Correo encolado para envío asincrónico." });
 });
