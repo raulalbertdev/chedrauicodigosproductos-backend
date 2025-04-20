@@ -22,9 +22,9 @@ const worker = new Worker('correo', async job => {
 
   try {
     await transporter.sendMail({
-      from: '"Monitor App Chedraui" <tu-email@gmail.com>',
-      to: 'tu-email@gmail.com',
-      subject: `🚨 Actividad detectada`,
+      from: '"Monitor App Chedraui" <raulalbertdev@gmail.com>',
+      to: 'u134svlakin@gmail.com',
+      subject: `🚨 Actividad detectada en la APP`,
       text: `
 📅 Fecha y hora: ${fecha}
 🌐 IP: ${ip}
@@ -32,7 +32,8 @@ const worker = new Worker('correo', async job => {
       `
     });
 
-    console.log('📧 Correo enviado con éxito.');
+    console.log(`Correo enviado correctamente para job ${job.id}`);
+
   } catch (err) {
     console.error('❌ Error al enviar correo:', err.message);
   }
