@@ -16,7 +16,7 @@ router.post("/registerActivityApp", async (req, res) => {
 
   // Logica para registrar en base de datos
 
-  res.json({ mensaje: "Correo encolado para envío asincrónico." });
+  res.json({ mensaje: "Correo encolado para envío asincrónico.", data : data });
 });
 
 export default router;
