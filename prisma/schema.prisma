@@ -18,7 +18,7 @@ datasource db {
 model RegistroActividad {
   id     Int      @id @default(autoincrement())
   ip     String
-  fecha  DateTime
+  fecha  String
   status String
 
   @@schema("chedrauijs")
