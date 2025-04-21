@@ -1,0 +1,25 @@
+En local se ejecuta npx prisma studio para ver graficamente los datasource
+
+En produccion se ejecuta lo siguiente:
+
+Entras al modo admin de postgres psql: sudo -u postgres psql
+
+Te conectas a la base de datos: \c chedrauiappdb;
+
+Al tener esto en un esquema específico que no es el público, lo específicas para hacer cualquier query a la base de datos: 
+
+SELECT * FROM "chedrauijs"."RegistroActividad";
+DELETE FROM "chedrauijs"."RegistroActividad";
+
+
+DELETE FROM "chedrauijs"."RegistroActividad"
+WHERE ip = '187.190.175.161'; // Mi IP
+
+Borrar toda la tabla: DROP TABLE "chedrauijs"."RegistroActividad";
+
+Siempre es bueno ver cuántos registros se van a eliminar antes de hacerlo: SELECT COUNT(*) FROM "chedrauijs"."RegistroActividad";
+
+
+
+Para listar todas las tablas de tu esquema, puedes hacer: \dt chedrauijs.*
+O si quieres ver todas las relaciones de todos los esquemas: \dt *.*
