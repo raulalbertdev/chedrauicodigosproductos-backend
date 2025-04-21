@@ -1,0 +1,88 @@
+Solucion a problema de acceso a esquema publico: https://stackoverflow.com/questions/74110708/postgres-15-permission-denied-for-schema-public
+
+
+🛠️ 1. Instalar PostgreSQL en el servidor
+bash
+Copiar
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+
+🧑‍💻 2. Crear usuario y base de datos en PostgreSQL
+bash
+Copiar
+sudo -u postgres psql
+
+
+Dentro del CLI de psql:
+
+sql
+Copiar
+CREATE USER raulalbertdev WITH PASSWORD 'TuPasswordFuerte123';
+CREATE DATABASE chedrauippdb OWNER raulalbertdev;
+
+GRANT ALL PRIVILEGES ON DATABASE chedrauippdb TO raulalbertdev;
+
+\c chedrauippdb
+
+-- Otorgar permisos en el esquema public
+GRANT USAGE, CREATE ON SCHEMA public TO raulalbertdev;
+ALTER SCHEMA public OWNER TO raulalbertdev;
+
+
+
+🔐 3. Configurar variable de entorno en .env en el servidor
+env
+Copiar
+DATABASE_URL="postgresql://raulalbertdev:TuPasswordFuerte123@localhost:5432/chedrauippdb"
+
+
+
+📦 4. Instalar dependencias del proyecto
+Ya estando dentro del proyecto:
+
+bash
+Copiar
+npm install
+
+
+
+
+🔁 5. Ejecutar migraciones de Prisma en producción
+Generar las migraciones (en local):
+
+bash
+Copiar
+npx prisma migrate deploy
+⚠️ Usa deploy en producción, no dev, ya que dev intenta crear la base de datos sombra, lo cual no es apropiado para producción.
+
+
+⚙️ 6. Generar cliente de Prisma (si es necesario)
+bash
+Copiar
+npx prisma generate
+
+
+
+🖥️ 8. Levantar tu servidor
+Puedes usar:
+
+bash
+Copiar
+pm2 start server.js --name chedrauicodigos
+
+
+
+🔒 9. (Opcional) Asegura conexión PostgreSQL solo local
+Asegúrate de que en /etc/postgresql/15/main/pg_hba.conf tengas algo como:
+
+python
+Copiar
+# Permitir solo conexiones locales
+host    all             all             127.0.0.1/32            md5
+host    all             all             ::1/128                 md5
+Y reinicia el servicio:
+
+bash
+Copiar
+sudo systemctl restart postgresql
